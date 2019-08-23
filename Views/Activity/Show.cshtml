@@ -1,0 +1,58 @@
+@model Act
+
+<div style="display: inline-block; width:650px;"><h1> Dojo ACtivity Center !</h1></div>
+<div style="display: inline-block; width:250px;float:right;"><h6><a asp-action="Dashboard">Dashboard</a> |<a href="/Logout">Lougout</a></h6></div>
+
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Activity</th>
+            <th>Event Cordinator</th>
+            <th>Description</th>
+            <th>List of Participants </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.Title</td>
+            <td>@Model.Creator.Name</td>
+            <td>@Model.Description</td>
+           <td>
+
+            @foreach(var x in Model.Participants)
+                            {
+            
+
+                <p>@x.ppUsers.Name</p>
+                            }           
+            </td>
+            
+            <td>
+                @if(@Model.UserId != ViewBag.UserId)
+                {
+                        if(@Model.Participants.Any(v => v.UserId == ViewBag.UserId))
+                        {
+                            <a asp-action="Remove" asp-controller="Action" asp-route-ActId="@Model.ActivityId">UNJOIN</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Action" asp-controller="Action" asp-route-ActId="@Model.ActivityId" asp-route-z="@true">JOIN</a>
+                        }
+                }
+                else
+                {
+                    <a asp-action="Delete" asp-controller="Action" asp-route-ActId="@Model.ActivityId">DELETE</a>
+                }
+                
+            </td>
+                            
+
+        </tr>
+
+    </tbody>
+
+</table>
+
+     <a asp-action="New"><button>New Wedding</button></a>

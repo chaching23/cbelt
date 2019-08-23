@@ -1,0 +1,57 @@
+@model List<Act>
+    
+<div style="display: inline-block; width:650px;"><h1>Dojo Activity Center!</h1></div>
+<div style="display: inline-block; width:250px;float:right;"><h6>Welcome, @ViewBag.UserInfo.Name </h6><h6><a asp-action="Dashboard">Dashboard</a> |<a href="/Logout">Lougout</a></h6></div>
+
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Activity</th>
+            <th>Date & Time</th>
+            <th>Duration</th>
+            <th>Event Cordinator</th>
+            <th># of Participants </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+
+            @foreach(var x in Model)
+    {
+
+        <tr>
+            <td><a asp-action="Show" asp-route-ActId="@x.ActivityId">@x.Title   </a></td>
+            <td>@x.Date.ToString("MMMM dd, yyyy")  @x.Time</td>
+            <td>@x.Duration</td>
+            <td>@x.Creator.Name</td>
+            <td>@x.Participants.Count</td>
+            <td>
+                @if(x.UserId != ViewBag.UserId)
+                {
+                    if(x.Participants.Any(v => v.UserId == ViewBag.UserId))
+                    {
+                        <a asp-action="Remove" asp-controller="Action" asp-route-ActId="@x.ActivityId">UNJOIN</a>
+                    }
+                    else
+                    {
+                        <a asp-action="Action" asp-controller="Action" asp-route-ActId="@x.ActivityId" asp-route-z="@true">Join</a>
+
+                    }
+                }
+                else
+                {
+                   
+                     <a asp-action="Delete" asp-controller="Activity" asp-route-ActId="@x.ActivityId">DELETE</a> 
+
+                }
+            </td>
+        </tr>
+    }
+
+
+    </tbody>
+
+</table>
+
+     <a asp-action="New" style="float:right;"><button>New Activity</button></a>
